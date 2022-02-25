@@ -12,11 +12,17 @@ import os
 import logging
 import base64
 import jwt
+import pymongo
 
 
 app = Flask(__name__)
 
-urlDatabase = "http://127.0.0.1:5000"
+client = pymongo.MongoClient("mongodb+srv://ShaunTornilla:cJgxXnBgwLDYKpPy@bradleycapstoneproject.c4bea.mongodb.net/test")
+urlDatabase = client.test_database
+
+print("\n\n\n", urlDatabase, "\n\n\n")
+
+#urlDatabase = "http://127.0.0.1:5000"
 urlWebsite = "http://127.0.0.1:5001"
 
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
