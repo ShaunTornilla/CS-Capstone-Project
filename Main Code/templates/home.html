@@ -1,0 +1,228 @@
+{% extends 'layout.html' %} {% block body %}
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link
+    rel="stylesheet"
+    href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css"
+  />
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css"
+  />
+  <link
+    href="https://cdn.datatables.net/rowgroup/1.0.2/css/rowGroup.dataTables.min.css"
+    rel="stylesheet"
+    type="text/css"
+  />
+
+  <script
+    type="text/javascript"
+    src="https://code.jquery.com/jquery-3.3.1.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"
+  ></script>
+  <script src="https://cdn.datatables.net/rowgroup/1.0.2/js/dataTables.rowGroup.min.js"></script>
+
+  <style>
+    td {
+      width: 150px;
+      padding: 5px;
+    }
+
+    p {
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  {% if user.access == "2" or user.access == "3" %}
+	<!-- header  -->
+	<div class="list-group pt-2 text-white">
+		<a class="list-group-item list-group-item-action flex-column align-items-start active">
+			<div class="d-flex w-100 justify-content-between">
+				<h3 class="mb-1">Shift Selector: {{user.first_name}} {{user.last_name}}</h3>
+			</div>
+			<hr class="my-1">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<p class="mb-1" id="position"></p>
+						<p class="mb-1">Role: {{user.position}}</p>
+					</div>
+					<div class="col">
+						<p class="mb-1" style="text-align: right" id="totalHoursTxt">Total Hours : <span
+								class="badge badge-pill badge-secondary" style="font-size:18px"
+								id="totalHrs"></span>
+						</p>
+						<p class="mb-1" style="text-align: right;" id="availHoursTxt">Available Hours : <span
+								class="badge badge-pill badge-secondary" style="font-size:18px" id="availHrs">
+							</span>
+						</p>
+
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+	<!-- End Header  -->
+
+  <!-- My Shifts Table  -->
+  <div class="jumbotron" style="padding: 1rem 2rem; width: 100%;">
+    <table class="display" id="table1" name="dataTable" style="width: 100%;">
+      <thead>
+        <tr>
+          <th hidden>id</th>
+          <th>Day</th>
+          <th>Date</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for key,value in schedule.items() %}
+        <tr>
+          <td hidden>{{ value['id_shift_daypart'] }}</td>
+          <td>{{ value['day_of_week'] }}</td>
+          <td>{{ value['date'] }}</td>
+          <td>{{ value['start_time'] }} - {{ value['end_time'] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <!-- End My Shifts Table  -->
+
+    <script type="text/javascript" class="init">
+
+      var shifts = JSON.parse('{{ schedule | tojson | safe }}');
+
+      var availMins;
+	  var availHrs;
+      var totalMins;
+	  var totalHrs;
+	  var MAX_MINS;
+
+	  //sets position of user
+	  if ('{{user.part_time_ind}}' == "Y") {
+	      document.getElementById("position").innerHTML = "Position: Part Time";
+		  MAX_MINS = 1500;
+	  }
+	  else {
+	      MAX_MINS = 2400;
+	      document.getElementById("position").innerHTML = "Position: Full Time";
+	   }
+
+	  // time format (hh:mm AM/PM)
+	  function parseMinutesFromTimeString(time) {
+	      var parts = time.split(':');
+	      var hour = parseInt($.trim(parts[0]));
+	      var minuteParts = parts[1].split(' ');
+	      if($.trim(minuteParts[1]) == 'PM') { hour += 12; }
+	          var minutes = parseInt($.trim(minuteParts[0]));
+		      var result = (hour * 60) + minutes;
+		      return result;
+	  }
+
+      $(function () {
+        //creates master table
+        var collapsedGroups = {};
+        var table = $("table.display").DataTable({
+          language: {
+            emptyTable: " ",
+          },
+          paging: false,
+          searching: false,
+          ordering: true,
+          info: false,
+          //Column names 
+          columns: [
+            { data: "id", visible: "false" },
+            { data: "day" },
+            { data: "date" },
+            { data: "time" },
+          ],
+          //Table sorted by column 2, ascending 
+          order: [[2, "asc"]],
+          //Groups rows by day of the week 
+          rowGroup: {
+            // Uses the 'row group' plugin
+            dataSrc: "day",
+            startRender: function (rows, group) {
+              var collapsed = !!collapsedGroups[group];
+
+              rows.nodes().each(function (r) {
+                r.style.display = collapsed ? "none" : "";
+              });
+
+              // Add category name to the <tr>. NOTE: Hardcoded colspan
+              return $("<tr/>")
+                .append(
+                  '<td colspan="8" style="text-align:center">' +
+                    group +
+                    " (" +
+                    rows.count() +
+                    ")</td>"
+                )
+                .attr("data-name", group)
+                .toggleClass("collapsed", collapsed);
+            },
+          },
+        });
+        // hides / collapses row group headers
+        $("table.display").on("click", "tr.group-start", function () {
+          var name = $(this).data("name");
+          collapsedGroups[name] = !collapsedGroups[name];
+          table.draw(false);
+        });
+
+        //dynamically changes values of total and available hours and corresponding color
+		$(function () {
+			totalMins = 0;
+			totalHrs = 0;
+            availHrs = 0;
+
+			if({{availMins}} > 0)
+				availHrs = {{availMins}} / 60.;
+			totalMins = MAX_MINS - {{availMins}}
+			totalHrs = totalMins / 60.;
+
+			document.getElementById("totalHrs").innerHTML = totalHrs;
+			document.getElementById("availHrs").innerHTML = availHrs;
+
+			//sets background & text color of total hours and available hours
+			if (totalMins == MAX_MINS) {
+				$("span#totalHrs").css({ "background-color": "green", "color": "white" });
+				$("span#availHrs").css({ "background-color": "crimson", "color": "white" });
+			}
+			else if (totalMins > 0) {
+				$('span#totalHrs').css({ "background-color": "grey", "color": "black" });
+				$('span#availHrs').css({ "background-color": "grey", "color": "black" });
+			}
+			else {
+				$("span#totalHrs").css({ "background-color": "crimson", "color": "white" });
+				$("span#availHrs").css({ "background-color": "green", "color": "white" });
+			}
+		})
+      });
+    </script>
+  </div>
+  {% endif %}
+</body>
+{% endblock %}

@@ -60,16 +60,59 @@ class User():
     def set_session_key(self, session_key):
         self.session_key = session_key
 
+def getUser():
 
-@app.route('/login')
+    username = ""
+    user = ""
+
+    user = User("", "", "", "", "", "", "", "")
+
+    return user
+
+
+## Handles logging into the program
+@app.route('/login', methods = ['GET', 'POST'])
 def login():
 
-
-    user = User("stornilla", "test_role", "Shaun", "Tornilla", "part_time", "stornilla@mail.bradley.edu", "1234567890")
-
+    ## Grabs the login class to make shit in the html functional(?)
     form = Login(request.form)
 
+    # Handles the user requirement in the return
+    user = getUser()
+
+    # Waits for the submit button to be pushed
+    if request.method == "POST":
+
+        # Grabs userID        
+        userID = requests.get(urlDatabase + "/getuserfromemail/" + str(form.email.data))
+
+        # print("\n\n\n", userID.json().get('id_employee'), "\n\n\n")
+        # print("\n\n\n", form.password.data, "\n\n\n")
+
+        # Checks if successful and proceeds to the password check
+        if userID.status_code == 200:
+
+            password_check = requests.get(urlDatabase + "/passwordcheck/" + str(userID.json().get('id_employee')), headers = dict({"Password": str(form.password.data)}))
+
+            # If successful,
+            if password_check.status_code == 200:
+
+                return redirect(url_for("home"))
+
+            else:
+
+                # TO DO
+                pass
+        
     return render_template('login.html', form = form, user = user)
+
+
+@app.route('/')
+def home():
+
+    ## TO DO 
+
+    return render_template('home.html')
 
 
 class Login(Form):
