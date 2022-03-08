@@ -154,10 +154,60 @@ class CreateNewUser(Resource):
         
         return(response)
 
+class CreateShiftData(Resource):
+    # Add a shift
+    def add_shift(self, start_time, end_time, employee_count, req_training):
+        shift_entry = db["shfits"].insert_one(
+            {
+                "start_time": start_time,
+                "end_time": end_time,
+                "employee_count": employee_count,
+                "req_training": req_training,
+                "assigned_employees": [],
+            }
+        )
+
+        response = make_response({'shift_id' : parse_json(shift_entry.inserted_id)}, 200)
+
+        return response
 
 
 
+class GetShiftData(Resource):
+    # Find a shift with given parameters. If one is left blank or set to None, it is ignored
+    def view_shift(self, start_time=None, end_time=None, employee_count = None, req_training = None, assigned_employees = None):
+        shifts = db["shifts"]
+        query = {}
+        if start_time is not None:
+            query["start_time"] = str(start_time)
+        
+        if end_time is not None:
+            query["end_time"] = str(end_time)
 
+        if employee_count is not None:
+            query["employee_count"] = employee_count
+        
+        if req_training is not None:
+            query["req_training"] = req_training
+        
+        if assigned_employees is not None:
+            query["assigned_employees"] = assigned_employees
+
+        doc = shifts.find(query)
+        
+        response = make_response(doc, 200)
+
+        return response
+
+class GetShiftDataComplex(Resource):
+    def view_shift_complex(self, query):
+        shifts = db["shifts"]
+        
+        doc = shifts.find(query)
+
+        response = make_response(doc, 200)
+
+        return response
 
 ##########
 
@@ -176,6 +226,8 @@ api.add_resource(GetUserIDFromEmail, '/getuseridfromemail/<string:email_address>
 api.add_resource(PasswordCheck, '/passwordcheck/<string:user_id>')
 api.add_resource(GetUserData, '/getuserdata/<string:user_id>')
 api.add_resource(CreateNewUser, '/createnewuser/<string:first_name>/<string:last_name>/<string:email>')
+api.add_resource(GetShiftData, '/getshiftdata/<string:start_time>/<string:end_time>/<int:employee_count>/<string:req_training>/<string:assigned_employees>')
+api.add_resource(CreateShiftData, '/createshiftdata/<string:start_time>/<string:end_time>/<int:employee_count>/<string:req_training>')
 # api.add_resource(CompleteUserCreation, '/completeusercreation/<string:token>')
 
 if __name__ == '__main__':

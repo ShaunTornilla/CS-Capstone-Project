@@ -56,7 +56,7 @@ def view_shift_complex(db, query):
 # Populate the database with (count) dummy shifts
 def populate_shifts(db, count):
     for i in range(0, count):
-        add_shift(db, fake.date(), random.randrange(0, 4), random.choice(["forklift", "ladder", "machine", "welding", "security", "chemical"]))
+        add_shift(db, fake.datetime(), random.randrange(0, 4), random.choice(["forklift", "ladder", "machine", "welding", "security", "chemical"]))
 
 if __name__ == "__main__":
     fake = Faker()
