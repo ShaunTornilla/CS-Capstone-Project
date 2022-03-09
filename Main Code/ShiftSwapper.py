@@ -13,16 +13,18 @@ def connect():
         print("connection failed")
 
 # Add a shift
-def add_shift(db, time, employee_count, req_training):
-    print("Adding!")
-    db.shifts.insert_one(
-        {
-            "time": time,
-            "employee_count": employee_count,
-            "req_training": req_training,
-            "assigned_employees": [],
-        }
-    )
+def add_shift(db, start_time, end_time, employee_count, req_training):
+        shift_entry = db["shfits"].insert_one(
+            {
+                "start_time": start_time,
+                "end_time": end_time,
+                "employee_count": employee_count,
+                "req_training": req_training,
+                "assigned_employees": [],
+            }
+        )
+
+        return shift_entry
 
 # Find a shift with given parameters. If one is left blank or set to None, it is ignored
 def view_shift(db, date=None, employee_count = None, req_training = None, assigned_employees = None):
@@ -56,16 +58,11 @@ def view_shift_complex(db, query):
 # Populate the database with (count) dummy shifts
 def populate_shifts(db, count):
     for i in range(0, count):
-        add_shift(db, fake.datetime(), random.randrange(0, 4), random.choice(["forklift", "ladder", "machine", "welding", "security", "chemical"]))
+        add_shift(db, fake.date_time(), fake.date_time(), random.randrange(0, 4), random.choice(["forklift", "ladder", "machine", "welding", "security", "chemical"]))
 
 if __name__ == "__main__":
     fake = Faker()
     db = connect()
 
-    query = {"time": { "$regex": "^20" }}
-
-    doc = view_shift_complex(db, query)
-
-    for x in doc:
-        print(doc)
+    populate_shifts(db, 20)
 

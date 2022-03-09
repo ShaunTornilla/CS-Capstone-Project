@@ -156,7 +156,7 @@ class CreateNewUser(Resource):
 
 class CreateShiftData(Resource):
     # Add a shift
-    def add_shift(self, start_time, end_time, employee_count, req_training):
+    def post(self, start_time, end_time, employee_count, req_training):
         shift_entry = db["shfits"].insert_one(
             {
                 "start_time": start_time,
@@ -175,7 +175,7 @@ class CreateShiftData(Resource):
 
 class GetShiftData(Resource):
     # Find a shift with given parameters. If one is left blank or set to None, it is ignored
-    def view_shift(self, start_time=None, end_time=None, employee_count = None, req_training = None, assigned_employees = None):
+    def get(self, start_time=None, end_time=None, employee_count = None, req_training = None, assigned_employees = None):
         shifts = db["shifts"]
         query = {}
         if start_time is not None:
@@ -195,17 +195,17 @@ class GetShiftData(Resource):
 
         doc = shifts.find(query)
         
-        response = make_response(doc, 200)
+        response = make_response(str(doc), 200)
 
         return response
 
 class GetShiftDataComplex(Resource):
-    def view_shift_complex(self, query):
+    def get(self, query):
         shifts = db["shifts"]
         
         doc = shifts.find(query)
 
-        response = make_response(doc, 200)
+        response = make_response(str(doc), 200)
 
         return response
 
