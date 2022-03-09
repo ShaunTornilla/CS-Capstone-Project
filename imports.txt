@@ -7,3 +7,4 @@ flask-restful
 flask-login
 certifi
 passlib
+requests
