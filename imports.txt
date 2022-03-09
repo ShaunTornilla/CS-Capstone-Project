@@ -2,7 +2,6 @@ Flask
 Flask-wtf
 email_validator
 'pymongo[srv]'
-Faker
 
 flask-restful
 flask-login

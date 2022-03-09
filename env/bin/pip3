@@ -1,6 +1,4 @@
-#!/bin/sh
-'''exec' "/Users/erikbendt/Desktop/Personal/App Dev/Scheduler-Flask/env/bin/python3" "$0" "$@"
-' '''
+#!/Users/erikbendt/Desktop/CS-Capstone-Project/env/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
