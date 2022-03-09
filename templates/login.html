@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="jumbotron" style="height: auto;">
+
+    <h3 class="font-weight-normal text-center">Log in</h3>
+    <hr class="mb-4" style="width: 25%; margin: auto;">
+
+    <div class="d-flex justify-content-center">
+
+        <form action="" method="POST" class="col-6" novalidate>
+            {{ form.hidden_tag() }}
+            <!-- email section -->
+            <div class="mb-3">
+                {{ form.email.label }}
+
+                {% if form.email.errors %}
+                    {{ form.email(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for errors in form.email.errors %}
+                            <span>{{ errors }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.email(class="form-control") }}
+                {% endif %}
+            </div>
+
+            <!-- password section -->
+            <div class="mb-3">
+                {{ form.password.label }}
+                
+                {% if form.password.errors %}
+                    {{ form.password(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for errors in form.password.errors %}
+                            <span>{{ errors }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.password(class="form-control") }}
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.remember(class="form-check-input") }}
+                {{ form.remember.label }}
+            </div>
+            <div class="text-center d-grid">
+                {{ form.submit(class="btn") }}
+            </div>
+        </form>
+
+    </div>
+
+</div>
+{% endblock content %}
