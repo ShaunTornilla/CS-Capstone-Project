@@ -157,7 +157,7 @@ class CreateNewUser(Resource):
 class CreateShiftData(Resource):
     # Add a shift
     def post(self, start_time, end_time, employee_count, req_training):
-        shift_entry = db["shfits"].insert_one(
+        shift_entry = db["shifts"].insert_one(
             {
                 "start_time": start_time,
                 "end_time": end_time,
@@ -179,10 +179,10 @@ class GetShiftData(Resource):
         shifts = db["shifts"]
         query = {}
         if start_time is not None:
-            query["start_time"] = str(start_time)
+            query["start_time"] = start_time
         
         if end_time is not None:
-            query["end_time"] = str(end_time)
+            query["end_time"] = end_time
 
         if employee_count is not None:
             query["employee_count"] = employee_count
@@ -194,8 +194,8 @@ class GetShiftData(Resource):
             query["assigned_employees"] = assigned_employees
 
         doc = shifts.find(query)
-        
-        response = make_response(str(doc), 200)
+
+        response = make_response(doc.to.list(), 200)
 
         return response
 
@@ -205,7 +205,7 @@ class GetShiftDataComplex(Resource):
         
         doc = shifts.find(query)
 
-        response = make_response(str(doc), 200)
+        response = make_response(doc.to.list(), 200)
 
         return response
 

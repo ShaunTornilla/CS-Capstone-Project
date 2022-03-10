@@ -1,10 +1,13 @@
 from pymongo import MongoClient
 from faker import Faker
 import random
+import certifi
+import datetime
 
 # Connect to the database
 def connect():
-    client = MongoClient("mongodb+srv://bob:bob@bradleyschedulerapplica.s3n3e.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+    ca = certifi.where()
+    client = MongoClient("mongodb+srv://bob:bob@bradleyschedulerapplica.s3n3e.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",tlsCAFile=ca)
     if client:
         print("successful connection")
         db = client["application_database"]
@@ -14,7 +17,7 @@ def connect():
 
 # Add a shift
 def add_shift(db, start_time, end_time, employee_count, req_training):
-        shift_entry = db["shfits"].insert_one(
+        shift_entry = db["shifts"].insert_one(
             {
                 "start_time": start_time,
                 "end_time": end_time,
@@ -27,12 +30,15 @@ def add_shift(db, start_time, end_time, employee_count, req_training):
         return shift_entry
 
 # Find a shift with given parameters. If one is left blank or set to None, it is ignored
-def view_shift(db, date=None, employee_count = None, req_training = None, assigned_employees = None):
+def view_shift(db, start_time=None, end_time=None, employee_count = None, req_training = None, assigned_employees = None):
     shifts = db["shifts"]
     query = {}
-    if date is not None:
-        query["time"] = str(date)
+    if start_time is not None:
+        query["start_time"] = start_time
     
+    if end_time is not None:
+        query["end_time"] = end_time
+
     if employee_count is not None:
         query["employee_count"] = employee_count
     
@@ -43,7 +49,12 @@ def view_shift(db, date=None, employee_count = None, req_training = None, assign
         query["assigned_employees"] = assigned_employees
 
     doc = shifts.find(query)
-    
+
+    x = []
+
+    for i in doc:
+        x.append(i)
+
     print("Query complete!")
     return doc
 
@@ -64,5 +75,14 @@ if __name__ == "__main__":
     fake = Faker()
     db = connect()
 
-    populate_shifts(db, 20)
+    #populate_shifts(db, 20)
+    x = view_shift(db, start_time=datetime("1974-07-13T00:25:08.000+00:00"), end_time=datetime("2017-10-30T01:04:40.000+00:00"), employee_count=1, req_training="security")
+    for i in x:
+        print(i)
+
+    print(x)
+    
+    #y = view_shift(db)
+    #for i in y:
+        #print(i)
 
