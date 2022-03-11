@@ -1,22 +1,15 @@
-/* 
-color scheme
-    - primary: eggshell #F5F5F5 
-    - secondary: navy blue #0F1626
-    - third: coral #FF533D
-*/
-
 body {
     background-color: #F5F5F5;
 }
 
 /* styling for all buttons */
 .btn {
-    background-color: #0F1626;
-    color: #F5F5F5;
+    background-color: black;
+    color: white;
 }
 .btn:hover {
-    background-color: #FF533D;
-    color: #F5F5F5;
+    background-color: #A50000;
+    color: white;
 }
 
 /* login jumbotron */
@@ -26,5 +19,5 @@ body {
     margin-bottom: 2rem;
     background-color: white;
     border-radius: .3rem;
-    border: .5px solid #0F1626;
+    border: .5px solid black;
   }
