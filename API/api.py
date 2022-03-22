@@ -34,60 +34,6 @@ CLIENT_SALT = os.environ['CLIENT_SALT']
 
 ## A LOT TO DO lol ##
 
-class PasswordCheck(Resource):
-
-    def get(self, user_id):
-
-        # print("\n\n\n", id_employee, "\n\n\n")
-        # print("\n\n\n", request.headers.get("Password"), "\n\n\n")
-
-        # Hashes the password grabbed from user input
-        inputted_password = request.headers.get("Password")
-        #hashed_password = hashlib.sha256((CLIENT_SALT + inputted_password).encode('utf-8')).hexdigest()
-        
-        # print("\n\n\n", hashed_password, "\n\n\n")
-
-        # Creates query to extract data from
-        query = db["passwords"].find({"_id": id_employee})
-
-        # Grabs the password stored with that employee id
-
-        for data in query:
-            password_stored = data["Hashed Password"]
-            print("\n\n\n", password_stored, "\n\n\n")
-        
-        # Runs a check to see if password inputted matches what's stored in the database
-        if hashed_password == password_stored:
-
-            time_session_created = datetime.utcnow()
-            time_session_expire = datetime.utcnow() + timedelta(days=1, seconds=0)
-
-            # set up payload for json web token
-            payload = {
-                'exp': time_session_expire,
-                'iat': time_session_created,
-                'sub': id_employee
-            }
-
-            # generate jwt session key to return as response
-            session_key = jwt.encode(
-                payload,
-                app.config.get('SECRET_KEY'),
-                algorithm='HS256'
-            )
-
-            # Password Successful
-            response = make_response({"session_key": session_key}, 200)
-
-        else:
-
-            # Handles invalid passwords
-            return response_error("400", "Bad Request", "Invalid Password"), 400
-
-        return(response)
-        # return(200)
-
-
 ## Searches employee database using email as input; Returns employee ID if successful
 class GetUserIDFromEmail(Resource):
 
@@ -104,7 +50,6 @@ class GetUserIDFromEmail(Resource):
             return response_error("400", "No account found."), 404
 
         else:
-
             # Grabs employee id for the return
             for data in query:           
                 result = str(data["_id"])
@@ -122,10 +67,9 @@ class GetUserData(Resource):
 
         for data in query:
             
+            # parse_json handles issues regarding the objectID
+            # Error given without parse_json: ObjectId is not JSON serializable
             result = parse_json(data)
-
-        
-        print("\n\n\n", type(result), "\n\n\n")
 
         response = make_response({'employee_data' : result}, 200)
 
@@ -149,11 +93,6 @@ class CreateNewUser(Resource):
             "State": "N/A",
             "Zip Code": "N/A",
             "Password": "N/A"})
-        
-        # parse_json handles issues regarding the objectID
-        # Error given without parse_json: ObjectId is not JSON serializable
-
-        print("\n\n\n", user_entry, "\n\n\n")
 
         response = make_response({'employee_id' : parse_json(user_entry.inserted_id)}, 200)
         
@@ -183,10 +122,7 @@ class UpdateUserInfo(Resource):
 
         response = make_response({'message' : 'User Creation Successful'}, 200)
 
-
         return(response)
-
-
 
 ##########
 
