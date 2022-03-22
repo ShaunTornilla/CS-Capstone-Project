@@ -138,7 +138,6 @@ def parse_json(data):
 
 
 api.add_resource(GetUserIDFromEmail, '/getuseridfromemail/<string:email_address>')
-api.add_resource(PasswordCheck, '/passwordcheck/<string:user_id>')
 api.add_resource(GetUserData, '/getuserdata/<string:user_id>')
 api.add_resource(CreateNewUser, '/createnewuser/<string:first_name>/<string:last_name>/<string:email>')
 api.add_resource(UpdateUserInfo, '/updateuserinfo/<string:userid>/<string:phonenumber>/<string:street>/<string:city>/<string:state>/<string:zipcode>/<string:password>')
