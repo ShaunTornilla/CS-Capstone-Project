@@ -1,0 +1,135 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="jumbotron" style="height: auto;">
+
+    <h3 class="font-weight-normal text-center">Create User</h3>
+    <hr class="mb-4" style="width: 25%; margin: auto;">
+
+    <div class="d-flex justify-content-center">
+        <form action="" method="POST" class="col-6" novalidate>
+            
+            {{ form.hidden_tag() }}
+    
+            <!-- Phonenumber -->
+            <div class="mb-3">
+                {{ form.phonenumber.label }}
+
+                {% if form.phonenumber.errors %}
+                    {{ form.phonenumber(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for errors in form.phonenumber.errors %}
+                            <span>{{ errors }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.phonenumber(class="form-control") }}
+                {% endif %}
+            </div>
+
+            <!-- Phonenumber -->
+            <div class="mb-3">
+                {{ form.street.label }}
+
+                {% if form.street.errors %}
+                    {{ form.street(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for errors in form.street.errors %}
+                            <span>{{ errors }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.street(class="form-control") }}
+                {% endif %}
+            </div>
+
+            <!-- City -->
+            <div class="mb-3">
+                {{ form.city.label }}
+
+                {% if form.city.errors %}
+                    {{ form.city(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for errors in form.city.errors %}
+                            <span>{{ errors }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.city(class="form-control") }}
+                {% endif %}
+            </div>
+
+            <!-- State -->
+            <div class="mb-3">
+                {{ form.state.label }}
+
+                {% if form.state.errors %}
+                    {{ form.state(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for errors in form.state.errors %}
+                            <span>{{ errors }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.state(class="form-control") }}
+                {% endif %}
+            </div>
+
+            <!-- ZipCode -->
+            <div class="mb-3">
+                {{ form.zipcode.label }}
+
+                {% if form.zipcode.errors %}
+                    {{ form.state(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for errors in form.zipcode.errors %}
+                            <span>{{ errors }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.zipcode(class="form-control") }}
+                {% endif %}
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                {{ form.password.label }}
+
+                {% if form.password.errors %}
+                    {{ form.password(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for errors in form.password.errors %}
+                            <span>{{ errors }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.password(class="form-control") }}
+                {% endif %}
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-3">
+                {{ form.confirm_password.label }}
+
+                {% if form.confirm_password.errors %}
+                    {{ form.confirm_password(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for errors in form.confirm_password.errors %}
+                            <span>{{ errors }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.confirm_password(class="form-control") }}
+                {% endif %}
+            </div>
+
+            <!-- submit button -->
+            <div class="text-center d-grid">
+                {{ form.submit(class="btn") }}
+            </div>
+
+        </form>
+    </div>
+
+</div>
+{% endblock content %}

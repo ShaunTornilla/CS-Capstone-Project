@@ -1,43 +1,57 @@
-<script>
-  //this script checks to see if the user if using a mobile device and redirects them if they are
-  if(navigator.userAgent.indexOf('Mobile') !== -1)
-  {
-    //on mobile so go to mobile
-    window.location.href="/mobile"
-  }
-</script>
-
 {% extends 'layout.html' %}
-{% block body %}
-<div class="jumbotron" style="padding: 2rem 2rem; width: 400px; margin: auto;">
-  <form method="POST" action="">
-    {% from "includes/_formhelper.html" import render_field %}
-    <form method="POST" action="">
 
-     {#USERNAME INPUT FIELD#}
-      <div class="form-group">
-        {{render_field(form.email, class_="form-control")}}
-      </div>
+{% block content %}
+<div class="jumbotron" style="height: auto;">
 
-    {#PASSWORD INPUT FIELD#}
-      <div class="form-group">
-        {{render_field(form.password, class_="form-control")}}
-      </div>
+    <h3 class="font-weight-normal text-center">Log in</h3>
+    <hr class="mb-4" style="width: 25%; margin: auto;">
 
-    {#SUBMIT BUTTON#}
-      <input type="submit" class="btn btn-primary" value="Submit" />
+    <div class="d-flex justify-content-center">
 
-    {#FORGOT PASSWORD BUTTON#}
-      <a  class="btn btn-primary mr-2" href="/forgotpassword" role="button">Forgot Password?</a>
+        <form action="" method="POST" class="col-6" novalidate>
+            {{ form.hidden_tag() }}
+            <!-- email section -->
+            <div class="mb-3">
+                {{ form.email.label }}
 
-      <!-- Wrong password message-->
-      {% for message in get_flashed_messages() %}
-      <div class="alert alert-warning">
-          {{message}}
-      </div>
-      {% endfor %}
+                {% if form.email.errors %}
+                    {{ form.email(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for errors in form.email.errors %}
+                            <span>{{ errors }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.email(class="form-control") }}
+                {% endif %}
+            </div>
 
-    </form>
-  </form>
+            <!-- password section -->
+            <div class="mb-3">
+                {{ form.password.label }}
+                
+                {% if form.password.errors %}
+                    {{ form.password(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for errors in form.password.errors %}
+                            <span>{{ errors }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.password(class="form-control") }}
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.remember(class="form-check-input") }}
+                {{ form.remember.label }}
+            </div>
+            <div class="text-center d-grid">
+                {{ form.submit(class="btn") }}
+            </div>
+        </form>
+
+    </div>
+
 </div>
-{% endblock %}
+{% endblock content %}
