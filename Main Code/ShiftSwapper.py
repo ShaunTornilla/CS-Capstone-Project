@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from faker import Faker
 import random
 import certifi
-import datetime
+from dateutil.parser import parse
 
 # Connect to the database
 def connect():
@@ -31,7 +31,9 @@ def add_shift(db, start_time, end_time, employee_count, req_training):
 
 # Find a shift with given parameters. If one is left blank or set to None, it is ignored
 def view_shift(db, start_time=None, end_time=None, employee_count = None, req_training = None, assigned_employees = None):
+    print("Starting view shift")
     shifts = db["shifts"]
+    print("Database found!")
     query = {}
     if start_time is not None:
         query["start_time"] = start_time
@@ -49,7 +51,7 @@ def view_shift(db, start_time=None, end_time=None, employee_count = None, req_tr
         query["assigned_employees"] = assigned_employees
 
     doc = shifts.find(query)
-
+    print("Query complete!")
     x = []
 
     for i in doc:
@@ -90,6 +92,10 @@ def assign_shift(db, shift, employeee_fname, employee_lname):
     )
 
 
+def string_to_date(datestring):
+    return parse(datestring)
+    #return datetime.strptime(datestring, '%Y-%m-%dT%H:%M:%S.%f%Z')
+
 # Populate the database with (count) dummy shifts
 def populate_shifts(db, count):
     for i in range(0, count):
@@ -98,9 +104,11 @@ def populate_shifts(db, count):
 if __name__ == "__main__":
     fake = Faker()
     db = connect()
-    x = 0
+    #x = 0
     #populate_shifts(db, 20)
-    #shift = view_shift(db, start_time=datetime("1974-07-13T00:25:08.000+00:00"), end_time=datetime("2017-10-30T01:04:40.000+00:00"), employee_count=1, req_training="security")
+    
+    print("Datetime created!")
+    x = view_shift(db, start_time=string_to_date("1974-07-13T00:25:08.000+00:00"), end_time=string_to_date("2017-10-30T01:04:40.000+00:00"), employee_count=1, req_training="security")
     #for i in x:
     #    print(i)
 
