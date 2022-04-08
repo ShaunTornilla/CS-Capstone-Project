@@ -66,6 +66,30 @@ def view_shift_complex(db, query):
 
     return doc
 
+def assign_shift(db, shift, employeee_fname, employee_lname):
+    shifts = db["shifts"]
+    employees = db["employees"]
+    query = {}
+
+    # TODO: Swap to a universal unique lookup (or recieve ID directly)
+    query["First Name"] = employeee_fname
+    query["Last Name"] = employee_lname
+
+    doc = employees.find(query)
+
+    # Return the first employee found
+    employee = doc[0]
+
+    print(employee)
+
+    shifts.update_one(
+        {"start_time": shift["start_time"],
+         "end_time": shift["end_time"],
+         "req_training": shift["req_training"]},
+        {"assigned_employees": {employee["new_id"]}},
+    )
+
+
 # Populate the database with (count) dummy shifts
 def populate_shifts(db, count):
     for i in range(0, count):
@@ -74,15 +98,18 @@ def populate_shifts(db, count):
 if __name__ == "__main__":
     fake = Faker()
     db = connect()
-
+    x = 0
     #populate_shifts(db, 20)
-    x = view_shift(db, start_time=datetime("1974-07-13T00:25:08.000+00:00"), end_time=datetime("2017-10-30T01:04:40.000+00:00"), employee_count=1, req_training="security")
-    for i in x:
-        print(i)
+    #shift = view_shift(db, start_time=datetime("1974-07-13T00:25:08.000+00:00"), end_time=datetime("2017-10-30T01:04:40.000+00:00"), employee_count=1, req_training="security")
+    #for i in x:
+    #    print(i)
 
-    print(x)
+    #print(x)
     
     #y = view_shift(db)
     #for i in y:
         #print(i)
+
+
+    assign_shift(db, shift=x, employeee_fname="Kyle", employee_lname="Lane")
 
