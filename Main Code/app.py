@@ -215,6 +215,19 @@ def filter():
     return render_template('filter.html')
 
 
+@app.route('/search_shift', methods=['GET', 'POST'])
+def search_shift():
+    if request.method == 'POST':
+        date = request.form.get("date")
+        time = request.form.get("time")
+        position = request.form.get("position")
+        ename = request.form.get("name")
+
+        print(date, time, position, ename)
+    
+    print("searching shift!")
+    return render_template('calendar.html')
+
 ###### Form Shite ######
 
 class Login(Form):
