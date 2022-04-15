@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, flash, session, logging, jsonify, make_response, abort
-from wtforms import Form, StringField, TextAreaField, PasswordField, validators, IntegerField, SelectField, RadioField, validators, EmailField
-##from wtforms.fields.html5 import EmailField
+from wtforms import Form, StringField, TextAreaField, PasswordField, validators, IntegerField, SelectField, RadioField, validators
+from wtforms.fields.html5 import EmailField
 from wtforms import ValidationError
 from datetime import timezone
 import datetime
@@ -197,6 +197,22 @@ def home():
     ## TO DO 
 
     return render_template('home.html')
+
+@app.route('/home', methods = ['GET', 'POST'])
+def homepage():
+    return render_template('home.html')
+
+@app.route('/account', methods = ['GET', 'POST'])
+def account():
+    return render_template('account.html')
+
+@app.route('/calendar', methods = ['GET', 'POST'])
+def calendarpage():
+    return render_template('calendar.html')
+
+@app.route('/filter', methods = ['GET', 'POST'])
+def filter():
+    return render_template('filter.html')
 
 
 ###### Form Shite ######
