@@ -286,6 +286,12 @@ class NewUser(Form):
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
 
-# class DeleteUser():
-
-# get user
+#class DeleteUser(Form):
+# email = EmailField('Email', [validators.InputRequired()])
+    #password = PasswordField('Password', [validators.Length(
+     #   min=8, max=40), validators.InputRequired()])
+    #database_list = mongo_client.list_database_names()
+    #mongo_client = email()
+    #col_list = db.list_collection_names()
+    #deleted_acc = collection_object.find_one_and_delete( some_query )
+    #print ("deleted:", deleted_acc)

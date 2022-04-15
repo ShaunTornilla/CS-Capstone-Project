@@ -86,3 +86,9 @@ if __name__ == "__main__":
     #for i in y:
         #print(i)
 
+# def shifts(db, query)
+      #  shifts = db["shifts"]
+    
+    #doc = shifts.find(query)
+
+
