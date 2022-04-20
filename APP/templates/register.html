@@ -1,12 +1,13 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div class="jumbotron" style="height: auto;">
+<div class="jumbotron shadow-lg p-5 m-0" style="max-width: 750px;">
 
-    <h3 class="font-weight-normal text-center">Create User</h3>
+    <h3 class="fw-bold fs-3 text-center">Register</h3>
     <hr class="mb-4" style="width: 25%; margin: auto;">
 
-    <div class="d-flex justify-content-center">
+    <div class="row justify-content-center">
+
         <form action="" method="POST" class="col-6" novalidate>
             
             {{ form.hidden_tag() }}

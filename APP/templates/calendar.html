@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div id="row">
+	<div id="calendar" style="width: 75%">
+		<p  align="center"><b>WEEKLY CALENDAR</b></p>
+		<div id="week-glance">
+			<!-- preview calendar of each day of week -->
+			<div id="column-monday" style="float: left; width: 20%" align="center">
+				<p>Monday</p>
+			</div>
+			<div id="column-tuesday" style="float: left; width: 20%" align="center">
+				<p>Tuesday</p>
+			</div>
+			<div id="column-wednesday" style="float: left; width: 20%" align="center">
+				<p>Wednesday</p>
+			</div>
+			<div id="column-thursday" style="float: left; width: 20%" align="center">
+				<p>Thursday</p>
+			</div>
+			<div id="column-friday" style="float: left; width: 20%" align="center">
+				<p>Friday</p>
+			</div>
+		</div>
+	</div>
+	<!-- insert vertical line here -->
+	<div id="filter" style="margin-left: 75%" align="center">
+		<p><b>FILTER ALL SHIFTS</b></p>
+		<div id="fields" align="left">
+			<form id="search">
+				<p>Date:
+				<input type="date" id="date" value=""> 
+				</p>
+				<p>Time: 
+				<input type="time" id="time">
+				</p>
+				<p>Position: 
+				<select id="position">
+					<option value="manager">Manager</option>
+					<option value="foreman">Foreman</option>
+					<option value="field-worker">Field Worker</option>
+					<option value="fortklift">Forklift Operator</option>
+					<option value="mechanic">Mechanic</option>
+					<option value="shop-worker">Shop Worker</option>
+				</select>
+				</p>
+				<p>Employee Name:
+				<input id="name">
+				</p>
+				<button>SEARCH</button>
+			</form>
+		</div>
+	</div>
+	<div id="calendar-buttons" style="width: 75%" align="center">
+		<button>Request Switch</button>
+		<button>Request Drop</button>
+		<button>View Requests</button>
+		<button>Shift History</button>
+	</div>
+</div>
+{% endblock %}

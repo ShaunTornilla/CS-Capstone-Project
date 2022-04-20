@@ -1,7 +1,9 @@
+from crypt import methods
 from flask import (
                 Flask,
                 flash, 
                 render_template,
+                session,
                 redirect,
                 url_for
                 )
@@ -9,6 +11,7 @@ import requests
 import json
 from passlib.hash import pbkdf2_sha256
 from forms import LoginForm, RegistrationForm
+from functools import wraps
 
 app = Flask(__name__)
 
@@ -18,10 +21,26 @@ urlWebsite = "http://127.0.0.1:5001"
 # set the secret key for forms
 app.config['SECRET_KEY'] = 'caed12f0f9063bf94fef30f10eaf5cbe'
 
+
+def login_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'username' in session:
+            return f(*args, **kwargs)
+        else:
+            flash("You need to login first", 'danger')
+            return redirect(url_for('login'))
+    return wrap
+
 # login routes
 @app.route("/", methods=['POST', 'GET'])
 @app.route("/login", methods=['POST', 'GET'])
 def login():
+
+    if 'username' in session:
+        flash(f"Already logged in as {session['username']}!", "success")
+        return redirect(url_for('home'))
+
     form = LoginForm()
 
     # main validation (entered data into fields, correct email, etc.)
@@ -33,7 +52,8 @@ def login():
 
             # Now check password - does form password equal database password?
             if (pbkdf2_sha256.verify(form.password.data, user_data['password'])):
-                flash(f"Successfully logged in!", "success")
+                session['username'] = user_data['First Name']
+                flash(f"Welcome, {session['username']}!", "success")
                 return redirect(url_for('home'))
 
             flash(f"Wrong Password!", "danger")
@@ -43,8 +63,8 @@ def login():
     return render_template('login.html', title='login', form=form)
 
 # register route
-@app.route("/createuser", methods=['POST', 'GET'])
-def create_user():
+@app.route("/register", methods=['POST', 'GET'])
+def register():
     form = RegistrationForm()
 
     # main validation (entered data into fields, correct email, etc.)
@@ -65,14 +85,28 @@ def create_user():
         
         flash("Account already exists with that email!", "danger")
     
-    return render_template('create_user.html', title='login', form=form)
+    return render_template('register.html', title='login', form=form)
+
+# calendar route
+@app.route("/calendar")
+def calendar():
+    return render_template('calendar.html')
 
 # home route
-@app.route("/home")
+@app.route("/home", methods=['GET','POST'])
+@login_required
 def home():
     return render_template('home.html', title='home')
 
+@app.route("/otherHome")
+def otherHome():
+    return render_template('otherHome.html')
 
+# logout route
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
 # can run the application via command 'python3 app.py'
 if __name__ == '__main__':

@@ -1,12 +1,13 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div class="jumbotron" style="height: auto;">
+<div class="jumbotron shadow-lg p-5 m-0" style="max-width: 750px;">
 
-    <h3 class="font-weight-normal text-center">Log in</h3>
+    <p class="fw-bold fs-3 text-center">Login</p>
     <hr class="mb-4" style="width: 25%; margin: auto;">
 
-    <div class="d-flex justify-content-center">
+
+    <div class="row justify-content-center">
 
         <form action="" method="POST" class="col-6" novalidate>
             {{ form.hidden_tag() }}
@@ -46,8 +47,11 @@
                 {{ form.remember(class="form-check-input") }}
                 {{ form.remember.label }}
             </div>
-            <div class="text-center d-grid">
-                {{ form.submit(class="btn") }}
+            <div class="text-center">
+                {{ form.submit(class="btn", style="width:100%;") }}
+            </div>
+            <div class="text-center ">
+                <a class="btn mt-3" href="{{ url_for('register') }}" style="width: 100%;">Don't Have an Account? Register Here</a>
             </div>
         </form>
 
