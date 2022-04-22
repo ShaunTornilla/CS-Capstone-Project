@@ -1,0 +1,49 @@
+html *
+{
+   font-size: 14px;
+   font-family: Arial !important;
+}
+
+
+body {
+    background-color: #F5F5F5;
+}
+
+.nav-link {
+    color: white;
+}
+
+/* styling for all buttons */
+.btn {
+    background-color: #A50000;
+    color: white;
+}
+.btn:hover {
+    background:rgba(165, 0, 1, .8);
+    color: white;
+}
+
+.jumbotron {
+    background-color: white;
+    border-radius: .3rem;
+    border: .5px solid black;
+  }
+
+.select-item {
+    background-color: lightgrey;
+    border-radius: 5px;
+}
+.select-item:hover {
+    background-color: darkgrey;
+}
+
+.slot-red {
+    background: rgba(165, 0, 1, 0.3);
+}
+.slot-grey {
+    background: rgba(192, 192, 192, 0.5);
+}
+.header {
+    background-color: rgb(230, 230, 230);
+    padding: 0.5rem;
+}

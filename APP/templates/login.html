@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="jumbotron shadow-lg p-5 m-0" style="max-width: 750px;">
+
+    <p class="fw-bold fs-3 text-center">Login</p>
+    <hr class="mb-4" style="width: 25%; margin: auto;">
+
+
+    <div class="row justify-content-center">
+
+        <form action="" method="POST" class="col-6" novalidate>
+            {{ form.hidden_tag() }}
+            <!-- email section -->
+            <div class="mb-3">
+                {{ form.email.label }}
+
+                {% if form.email.errors %}
+                    {{ form.email(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for errors in form.email.errors %}
+                            <span>{{ errors }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.email(class="form-control") }}
+                {% endif %}
+            </div>
+
+            <!-- password section -->
+            <div class="mb-3">
+                {{ form.password.label }}
+                
+                {% if form.password.errors %}
+                    {{ form.password(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for errors in form.password.errors %}
+                            <span>{{ errors }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.password(class="form-control") }}
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.remember(class="form-check-input") }}
+                {{ form.remember.label }}
+            </div>
+            <div class="text-center">
+                {{ form.submit(class="btn", style="width:100%;") }}
+            </div>
+            <div class="text-center ">
+                <a class="btn mt-3" href="{{ url_for('register') }}" style="width: 100%;">Don't Have an Account? Register Here</a>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+{% endblock content %}

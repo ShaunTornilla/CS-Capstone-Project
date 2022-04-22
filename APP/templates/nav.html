@@ -1,0 +1,31 @@
+<div class="container-fluid">
+
+    <a href="{{ url_for('home') }}" class="navbar-brand">Bradley Scheduler</a>
+   
+    {% if session['username'] %}
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+        <ul class="navbar-nav row row-cols-auto" style="width: 100%;">
+            <li class="col nav-item active">
+                <a class="nav-link" href="{{ url_for('home') }}">Home</span></a>
+            </li>
+            <li class="col nav-item">
+                <a class="nav-link" href="{{ url_for('calendar') }}">Calendar</a>
+            </li>
+            <li class="col nav-item">
+                <a class="nav-link" href="#">Account</a>
+            </li>
+            <li class="col nav-item">
+                <a class="nav-link" href="{{ url_for('otherHome') }}">Other Home</a>
+            </li>
+            <li class="col nav-item" style="margin-left: auto;">
+                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+            </li>
+        </ul>
+    </div>
+    {% endif %}
+
+</div>
