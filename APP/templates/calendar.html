@@ -27,15 +27,15 @@
 	<div id="filter" style="margin-left: 75%" align="center">
 		<p><b>FILTER ALL SHIFTS</b></p>
 		<div id="fields" align="left">
-			<form id="search">
+			<form id="search" action = "{{ url_for('search_shift') }}" method="post">
 				<p>Date:
-				<input type="date" id="date" value=""> 
+				<input type="date" id="date" value="" name="date"> 
 				</p>
 				<p>Time: 
-				<input type="time" id="time">
+				<input type="time" id="time" name="time">
 				</p>
 				<p>Position: 
-				<select id="position">
+				<select id="position" name="position">
 					<option value="manager">Manager</option>
 					<option value="foreman">Foreman</option>
 					<option value="field-worker">Field Worker</option>
@@ -45,9 +45,9 @@
 				</select>
 				</p>
 				<p>Employee Name:
-				<input id="name">
+				<input id="name" name="name">
 				</p>
-				<button>SEARCH</button>
+				<button type="submit">SEARCH</button>
 			</form>
 		</div>
 	</div>

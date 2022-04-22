@@ -1,11 +1,11 @@
-from crypt import methods
 from flask import (
                 Flask,
                 flash, 
                 render_template,
                 session,
                 redirect,
-                url_for
+                url_for,
+                request
                 )
 import requests
 import json
@@ -107,6 +107,20 @@ def otherHome():
 def logout():
     session.clear()
     return redirect(url_for('login'))
+
+
+@app.route('/search_shift', methods=['GET', 'POST'])
+def search_shift():
+    if request.method == 'POST':
+        date = request.form.get("date")
+        time = request.form.get("time")
+        position = request.form.get("position")
+        ename = request.form.get("name")
+
+        print(date, time, position, ename)
+    
+    print("searching shift!")
+    return render_template('calendar.html')
 
 # can run the application via command 'python3 app.py'
 if __name__ == '__main__':
